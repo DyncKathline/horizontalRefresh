@@ -32,7 +32,6 @@ public class LayoutAdapter extends RecyclerView.Adapter<LayoutAdapter.SimpleView
     private static final int DEFAULT_ITEM_COUNT = 5;
 
     private final Context mContext;
-    private final RecyclerView mRecyclerView;
     private final List<Integer> mItems;
     private int mCurrentItemId = 0;
     private int[] imageIds = {R.mipmap.card_cover1, R.mipmap.card_cover2, R.mipmap.card_cover3,
@@ -50,18 +49,16 @@ public class LayoutAdapter extends RecyclerView.Adapter<LayoutAdapter.SimpleView
         }
     }
 
-    public LayoutAdapter(Context context, RecyclerView recyclerView) {
-        this(context, recyclerView, DEFAULT_ITEM_COUNT);
+    public LayoutAdapter(Context context) {
+        this(context, DEFAULT_ITEM_COUNT);
     }
 
-    public LayoutAdapter(Context context, RecyclerView recyclerView, int itemCount) {
+    public LayoutAdapter(Context context, int itemCount) {
         mContext = context;
         mItems = new ArrayList<>(itemCount);
         for (int i = 0; i < itemCount; i++) {
             addItem(i);
         }
-
-        mRecyclerView = recyclerView;
     }
 
     public void addItem(int position) {

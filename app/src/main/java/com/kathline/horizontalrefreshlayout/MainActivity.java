@@ -25,10 +25,10 @@ public class MainActivity extends AppCompatActivity implements RefreshCallBack {
         refreshLayout.setRefreshHeader(new NiceRefreshHeader(this), HorizontalRefreshLayout.LEFT);
         refreshLayout.setRefreshHeader(new NiceRefreshHeader(this), HorizontalRefreshLayout.RIGHT);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.viewpager);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         LinearLayoutManager layout = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(layout);
-        mLayoutAdapter = new LayoutAdapter(this, mRecyclerView);
+        mLayoutAdapter = new LayoutAdapter(this);
         mRecyclerView.setAdapter(mLayoutAdapter);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLongClickable(true);
