@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LayoutAdapter extends RecyclerView.Adapter<LayoutAdapter.SimpleViewHolder> {
-    private static final int DEFAULT_ITEM_COUNT = 5;
 
     private final Context mContext;
     private final List<Integer> mItems;
@@ -50,15 +49,19 @@ public class LayoutAdapter extends RecyclerView.Adapter<LayoutAdapter.SimpleView
     }
 
     public LayoutAdapter(Context context) {
-        this(context, DEFAULT_ITEM_COUNT);
+        mContext = context;
+        mItems = new ArrayList<>();
     }
 
-    public LayoutAdapter(Context context, int itemCount) {
-        mContext = context;
-        mItems = new ArrayList<>(itemCount);
-        for (int i = 0; i < itemCount; i++) {
-            addItem(i);
-        }
+    public void setItems(List<Integer> list) {
+        mItems.clear();
+        mItems.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    public void addItems(List<Integer> list) {
+        mItems.addAll(list);
+        notifyDataSetChanged();
     }
 
     public void addItem(int position) {
@@ -70,13 +73,6 @@ public class LayoutAdapter extends RecyclerView.Adapter<LayoutAdapter.SimpleView
     public void removeItem(int position) {
         mItems.remove(position);
         notifyItemRemoved(position);
-    }
-
-    public void getMore() {
-        int size = getItemCount();
-        for (int i = size; i < size + 5; i++) {
-            addItem(i);
-        }
     }
 
     @Override

@@ -146,6 +146,39 @@ public class HorizontalRefreshLayout extends FrameLayout {
     }
 
     @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        int x = (int) ev.getX();
+        int y = (int) ev.getY();
+
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                mLastX = mLastInterceptX = x;
+                mLastY = mLastInterceptY = y;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                int deltaX = x - mLastInterceptX;
+                int deltaY = y - mLastInterceptY;
+
+                /**
+                 * 注意：需要判断refreshState != REFRESH_STATE_REFRESHING，否则当处于REFRESH_STATE_REFRESHING状态
+                 * 再次拖动滑动时，会有些许小瑕疵
+                 */
+                if (Math.abs(deltaX) > Math.abs(deltaY)) {//判断是否是水平滑动
+                    if (leftHeaderView != null && deltaX > 0 && !canChildScrollRight() && refreshState != REFRESH_STATE_REFRESHING) {//手指向右滑动
+                        headerState = LEFT;
+                    } else if (rightHeaderView != null && deltaX < 0 && !canChildScrollLeft() && refreshState != REFRESH_STATE_REFRESHING) {//手指向左滑动
+                        headerState = RIGHT;
+                    }
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                break;
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         int x = (int) ev.getX();
         int y = (int) ev.getY();
@@ -194,6 +227,9 @@ public class HorizontalRefreshLayout extends FrameLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if(refreshState == REFRESH_STATE_REFRESHING) {
+            return super.onTouchEvent(event);
+        }
         int x = (int) event.getX();
         int y = (int) event.getY();
 
@@ -206,7 +242,7 @@ public class HorizontalRefreshLayout extends FrameLayout {
             case MotionEvent.ACTION_DOWN:
                 mLastX = x;
                 mLastY = y;
-                break;
+                return true;
             case MotionEvent.ACTION_MOVE:
                 int deltaX = x - mLastX;
 
@@ -215,6 +251,7 @@ public class HorizontalRefreshLayout extends FrameLayout {
 
                 float dampingDX = deltaX * (1 - Math.abs((mTargetTranslationX / dragMaxHeaderWidth)));  //let drag action has resistance
                 mTargetTranslationX += dampingDX;
+                Log.i("kathline", "mTargetTranslationX: " + mTargetTranslationX);
 
                 if (headerState == LEFT) {
                     if (mTargetTranslationX <= 0) {
@@ -237,7 +274,7 @@ public class HorizontalRefreshLayout extends FrameLayout {
                             leftRefreshHeader.onDragging(mTargetTranslationX, percent, leftHeaderView);
                         }
                     }
-
+                    Log.i("kathline", "-leftHeaderWidth: " + (-leftHeaderWidth) + ", mTargetTranslationX: " + mTargetTranslationX + ", " +  (-leftHeaderWidth + mTargetTranslationX));
                     leftHeaderView.setTranslationX(-leftHeaderWidth + mTargetTranslationX);
                 } else if ((headerState == RIGHT)) {
                     if (mTargetTranslationX >= 0) {

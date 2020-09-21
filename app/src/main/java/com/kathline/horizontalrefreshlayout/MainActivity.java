@@ -10,6 +10,9 @@ import com.kathline.horizontalrefresh.HorizontalRefreshLayout;
 import com.kathline.horizontalrefresh.RefreshCallBack;
 import com.kathline.horizontalrefresh.refreshhead.NiceRefreshHeader;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements RefreshCallBack {
     private HorizontalRefreshLayout refreshLayout;
     protected RecyclerView mRecyclerView;
@@ -33,7 +36,12 @@ public class MainActivity extends AppCompatActivity implements RefreshCallBack {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLongClickable(true);
 
-        //refreshLayout.startAutoRefresh(HorizontalRefreshLayout.LEFT);
+//        List<Integer> list = new ArrayList<>();
+//        for (int i = 0; i < 5; i++) {
+//            list.add(i);
+//        }
+//        mLayoutAdapter.setItems(list);
+//        refreshLayout.startAutoRefresh(HorizontalRefreshLayout.LEFT);
     }
 
     @Override
@@ -41,6 +49,11 @@ public class MainActivity extends AppCompatActivity implements RefreshCallBack {
         refreshLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
+                List<Integer> list = new ArrayList<>();
+                for (int i = 0; i < 5; i++) {
+                    list.add(i);
+                }
+                mLayoutAdapter.setItems(list);
                 refreshLayout.onRefreshComplete();
             }
         }, 2000);
@@ -51,7 +64,11 @@ public class MainActivity extends AppCompatActivity implements RefreshCallBack {
         refreshLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mLayoutAdapter.getMore();
+                List<Integer> list = new ArrayList<>();
+                for (int i = 0; i < 5; i++) {
+                    list.add(i);
+                }
+                mLayoutAdapter.addItems(list);
                 refreshLayout.onRefreshComplete();
             }
         }, 2000);
