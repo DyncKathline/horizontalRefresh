@@ -329,22 +329,24 @@ public class HorizontalRefreshLayout extends FrameLayout {
 
             leftRefreshHeader.onRefreshing(leftHeaderView);//正在刷新
 
-            mTargetView.animate().translationX(leftHeaderWidth).setDuration(DURATION)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            mTargetTranslationX = leftHeaderWidth;
+            if(mTargetView != null) {
+                mTargetView.animate().translationX(leftHeaderWidth).setDuration(DURATION)
+                        .setListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                mTargetTranslationX = leftHeaderWidth;
 
-                            if (refreshCallback != null) {
-                                if (headerState == LEFT) {
-                                    refreshCallback.onLeftRefreshing();
-                                } else {
-                                    refreshCallback.onRightRefreshing();
+                                if (refreshCallback != null) {
+                                    if (headerState == LEFT) {
+                                        refreshCallback.onLeftRefreshing();
+                                    } else {
+                                        refreshCallback.onRightRefreshing();
+                                    }
                                 }
                             }
-                        }
-                    })
-                    .start();
+                        })
+                        .start();
+            }
         } else if (headerState == RIGHT && rightHeaderView != null) {
             refreshState = REFRESH_STATE_REFRESHING;
             //注意，这里使用的translationXBy
@@ -352,22 +354,24 @@ public class HorizontalRefreshLayout extends FrameLayout {
 
             rightRefreshHeader.onRefreshing(rightHeaderView);//正在刷新
 
-            mTargetView.animate().translationX(-rightHeaderWidth).setDuration(DURATION)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            if (refreshCallback != null) {
-                                if (headerState == LEFT) {
-                                    refreshCallback.onLeftRefreshing();
-                                } else {
-                                    refreshCallback.onRightRefreshing();
+            if(mTargetView != null) {
+                mTargetView.animate().translationX(-rightHeaderWidth).setDuration(DURATION)
+                        .setListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                if (refreshCallback != null) {
+                                    if (headerState == LEFT) {
+                                        refreshCallback.onLeftRefreshing();
+                                    } else {
+                                        refreshCallback.onRightRefreshing();
+                                    }
                                 }
-                            }
 
-                            mTargetTranslationX = -rightHeaderWidth;
-                        }
-                    })
-                    .start();
+                                mTargetTranslationX = -rightHeaderWidth;
+                            }
+                        })
+                        .start();
+            }
         }
     }
 
