@@ -1,14 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.kathline.horizontalrefresh.HorizontalRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/refresh"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/blue">
+    android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clipToPadding="false"/>
+        android:orientation="vertical">
 
-</com.kathline.horizontalrefresh.HorizontalRefreshLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="500dp"/>
+
+        <com.kathline.horizontalrefresh.HorizontalRefreshLayout
+            android:id="@+id/refresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/blue">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false" />
+
+        </com.kathline.horizontalrefresh.HorizontalRefreshLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="500dp"/>
+
+    </LinearLayout>
+
+</ScrollView>

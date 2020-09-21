@@ -93,7 +93,6 @@ public class LayoutAdapter extends RecyclerView.Adapter<LayoutAdapter.SimpleView
                 Toast.makeText(mContext, "", Toast.LENGTH_SHORT).show();
             }
         });
-        final int itemId = mItems.get(position);
     }
 
     @Override

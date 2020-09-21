@@ -251,7 +251,7 @@ public class HorizontalRefreshLayout extends FrameLayout {
 
                 float dampingDX = deltaX * (1 - Math.abs((mTargetTranslationX / dragMaxHeaderWidth)));  //let drag action has resistance
                 mTargetTranslationX += dampingDX;
-                Log.i("kathline", "mTargetTranslationX: " + mTargetTranslationX);
+                getParent().requestDisallowInterceptTouchEvent(true);
 
                 if (headerState == LEFT) {
                     if (mTargetTranslationX <= 0) {
