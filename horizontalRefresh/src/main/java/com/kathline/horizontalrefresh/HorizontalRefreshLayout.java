@@ -48,6 +48,7 @@ public class HorizontalRefreshLayout extends FrameLayout {
     private int headerState = -1;
     public static final int LEFT = 0;
     public static final int RIGHT = 1;
+    private boolean isRightEnable = true;
     //刷新状态
     private static final int REFRESH_STATE_IDLE = 0;
     private static final int REFRESH_STATE_START = 1;
@@ -166,7 +167,7 @@ public class HorizontalRefreshLayout extends FrameLayout {
                 if (Math.abs(deltaX) > Math.abs(deltaY)) {//判断是否是水平滑动
                     if (leftHeaderView != null && deltaX > 0 && !canChildScrollRight() && refreshState != REFRESH_STATE_REFRESHING) {//手指向右滑动
                         headerState = LEFT;
-                    } else if (rightHeaderView != null && deltaX < 0 && !canChildScrollLeft() && refreshState != REFRESH_STATE_REFRESHING) {//手指向左滑动
+                    } else if (rightHeaderView != null && deltaX < 0 && !canChildScrollLeft() && refreshState != REFRESH_STATE_REFRESHING && isRightEnable) {//手指向左滑动
                         headerState = RIGHT;
                     }
                 }
@@ -206,7 +207,7 @@ public class HorizontalRefreshLayout extends FrameLayout {
                         leftRefreshHeader.onStart(LEFT, leftHeaderView);
 
                         return true;
-                    } else if (rightHeaderView != null && deltaX < 0 && !canChildScrollLeft() && refreshState != REFRESH_STATE_REFRESHING) {//手指向左滑动
+                    } else if (rightHeaderView != null && deltaX < 0 && !canChildScrollLeft() && refreshState != REFRESH_STATE_REFRESHING && isRightEnable) {//手指向左滑动
                         headerState = RIGHT;
                         refreshState = REFRESH_STATE_START;
                         rightRefreshHeader.onStart(RIGHT, rightHeaderView);
@@ -376,7 +377,7 @@ public class HorizontalRefreshLayout extends FrameLayout {
                                 if (refreshCallback != null) {
                                     if (headerState == LEFT) {
                                         refreshCallback.onLeftRefreshing();
-                                    } else {
+                                    } else if(headerState == RIGHT) {
                                         refreshCallback.onRightRefreshing();
                                     }
                                 }
@@ -399,7 +400,7 @@ public class HorizontalRefreshLayout extends FrameLayout {
                                 if (refreshCallback != null) {
                                     if (headerState == LEFT) {
                                         refreshCallback.onLeftRefreshing();
-                                    } else {
+                                    } else if(headerState == RIGHT) {
                                         refreshCallback.onRightRefreshing();
                                     }
                                 }
@@ -417,6 +418,14 @@ public class HorizontalRefreshLayout extends FrameLayout {
      */
     public void onRefreshComplete() {
         smoothRelease();
+    }
+
+    /**
+     * 是否开启右侧滑动
+     * @param enable
+     */
+    public void setRightEnable(boolean enable) {
+        isRightEnable = enable;
     }
 
     /**

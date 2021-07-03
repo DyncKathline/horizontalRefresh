@@ -70,6 +70,9 @@ public class MainActivity extends AppCompatActivity implements RefreshCallBack {
                 }
                 mLayoutAdapter.addItems(list);
                 refreshLayout.onRefreshComplete();
+                if(mLayoutAdapter.getItemCount() > 20) {
+                    refreshLayout.setRightEnable(false);
+                }
             }
         }, 2000);
     }
